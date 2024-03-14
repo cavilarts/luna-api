@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/DB.js";
+import userRouter from "./Routers/UserRoute.js";
+import { errorHandler } from "./middleware/Error.js";
 
 // dotenv config
 dotenv.config();
@@ -17,6 +19,12 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+
+// routes
+app.use("/api/v1/users", userRouter);
+
+// error handler
+app.use(errorHandler);
 
 // server port
 const PORT = process.env.PORT || 5000;

@@ -29,6 +29,16 @@ const OrdersSchema = new mongoose.Schema(
       shippingMethod: { type: String },
       shippingCost: { type: Number },
     },
+    payments: {
+      paymentMethod: { type: String, required: true },
+      paymentResult: {
+        id: { type: String },
+        status: { type: String },
+        updateTime: { type: String },
+        email: { type: String },
+      },
+    },
+    totalPrice: { type: Number, required: true },
   },
   {
     timestamps: true,

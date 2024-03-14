@@ -76,25 +76,52 @@ export const updateUser = expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      user.phone = req.body.phone || user.phone;
+      user.name = req.body.name ?? user.name;
+      user.email = req.body.email ?? user.email;
+      user.phone = req.body.phone ?? user.phone;
 
-      if (req.body.password) {
-        user.password = bcrypt.hashSync(req.body.password, 10);
-      }
+      await user.save();
 
-      const updatedUser = await user.save();
-      const token = await generateToken(updatedUser._id);
       res.status(200).json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-        token: token,
+        message: "User updated successfully",
       });
     } else {
       res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Unexpected error occurred:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export const changePassword = expressAsyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user && bcrypt.compareSync(req.body.oldPassword, user.password)) {
+      user.password = bcrypt.hashSync(req.body.newPassword, 10);
+      await user.save();
+
+      res.status(200).json({
+        message: "Password updated successfully",
+      });
+    } else {
+      res.status(404).json({ error: "Error updating password" });
+    }
+  } catch (error) {
+    console.error("Unexpected error occurred:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export const deleteUser = expressAsyncHandler(async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.user._id);
+
+    if (user) {
+      res.status(200).json({ message: "User deleted successfully" });
+    } else {
+      res.status(400).json({ error: "User not found" });
     }
   } catch (error) {
     console.error("Unexpected error occurred:", error);

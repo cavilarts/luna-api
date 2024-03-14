@@ -8,5 +8,7 @@ router.post("/import/all", UserController.importUsers);
 router.post("/login", UserController.login);
 router.post("/register", UserController.register);
 router.put("/update", protect, UserController.updateUser);
+router.put("/update/password", protect, UserController.changePassword);
+router.delete("/", protect, UserController.deleteUser);
 
 export default router;

@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/DB.js";
 import userRouter from "./Routers/UserRoute.js";
+import categoryRouter from "./Routers/CategoryRoute.js";
 import { errorHandler } from "./middleware/Error.js";
 
 // dotenv config
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/categories", categoryRouter);
 
 // error handler
 app.use(errorHandler);

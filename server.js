@@ -5,6 +5,7 @@ import { connectDB } from "./config/DB.js";
 import userRouter from "./Routers/UserRoute.js";
 import categoryRouter from "./Routers/CategoryRoute.js";
 import productRouter from "./Routers/ProductsRoute.js";
+import orderRouter from "./Routers/OrderRoute.js";
 import { errorHandler } from "./middleware/Error.js";
 
 // dotenv config
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/orders", orderRouter);
 
 // error handler
 app.use(errorHandler);

@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "../Models/UserModel.js";
 import { users } from "../Data.js";
 import { generateToken } from "../middleware/Auth.js";
+import Orders from "../Models/OrderModel.js";
 
 export const importUsers = expressAsyncHandler(async (req, res) => {
   await User.deleteMany({});
@@ -18,7 +19,7 @@ export const login = expressAsyncHandler(async (req, res) => {
     if (user) {
       if (bcrypt.compareSync(password, user.password)) {
         const token = await generateToken(user._id);
-        console.log("User logged in successfully", token);
+
         res.status(200).json({
           _id: user._id,
           name: user.name,
@@ -119,6 +120,7 @@ export const deleteUser = expressAsyncHandler(async (req, res) => {
     const user = await User.findByIdAndDelete(req.user._id);
 
     if (user) {
+      await Orders.deleteMany({ user: user._id });
       res.status(200).json({ message: "User deleted successfully" });
     } else {
       res.status(400).json({ error: "User not found" });

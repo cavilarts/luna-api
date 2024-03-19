@@ -23,8 +23,7 @@ jobs:
           SOURCE: "."
 
       - name: ssh
-        image: appleboy/drone-ssh
-        uses: easingthemes/ssh-deploy@main
+        uses: appleboy/drone-ssh@master
         settings:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}

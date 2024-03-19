@@ -13,27 +13,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Deploy to EC2
+      - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: "/home/ubuntu/luna"
-          SOURCE: "."
+          TARGET: ${{ secrets.TARGET_DIR }}
 
-      - name: ssh
-        uses: appleboy/drone-ssh@master
-        settings:
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          script:
-            - cd /home/ubuntu/luna
-            - sudo move * .[^.]* /home/ubuntu/luna
-            - npm install
-            - touch .env
-            - echo PORT=${{ secrets.PORT }} >> .env
-            - echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
-            - echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
-            - npm start
+          script: npm install
+            echo PORT = ${{ secrets.PORT }} > .env
+            echo MONGO_URI = ${{ secrets.MONGO_URI }} >> .env
+            echo JWT_SECRET = ${{ secrets.JWT_SECRET }} >> .env
+            npm start

@@ -37,7 +37,6 @@ jobs:
             npm install
 
       - name: create env file
-        uses: appleboy/ssh-action@master
         run: |
           cd /home/ubuntu/luna
           touch .env
@@ -47,6 +46,11 @@ jobs:
 
       - name: start server
         uses: appleboy/ssh-action@master
-        run: |
-          cd /home/ubuntu/luna
-          npm start
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            cd /home/ubuntu/luna
+            npm start

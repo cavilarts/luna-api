@@ -35,22 +35,8 @@ jobs:
             cd /home/ubuntu/luna
             sudo move * .[^.]* /home/ubuntu/luna
             npm install
-
-      - name: create env file
-        run: |
-          cd /home/ubuntu/luna
-          touch .env
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
-          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
-
-      - name: start server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            cd /home/ubuntu/luna
+            touch .env
+            echo PORT=${{ secrets.PORT }} >> .env
+            echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
+            echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
             npm start

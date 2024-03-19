@@ -27,7 +27,9 @@ jobs:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: npm install
+          script: sudo apt-get update
+            sudo apt-get install -y nodejs
+            npm install
             echo PORT = ${{ secrets.PORT }} > .env
             echo MONGO_URI = ${{ secrets.MONGO_URI }} >> .env
             echo JWT_SECRET = ${{ secrets.JWT_SECRET }} >> .env

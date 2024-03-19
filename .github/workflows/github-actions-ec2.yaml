@@ -34,4 +34,3 @@ jobs:
             echo PORT = ${{ secrets.PORT }} > .env
             echo MONGO_URI = ${{ secrets.MONGO_URI }} >> .env
             echo JWT_SECRET = ${{ secrets.JWT_SECRET }} >> .env
-            npm start

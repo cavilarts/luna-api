@@ -24,6 +24,7 @@ jobs:
 
       - name: ssh
         image: appleboy/drone-ssh
+        uses: easingthemes/ssh-deploy@main
         settings:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
